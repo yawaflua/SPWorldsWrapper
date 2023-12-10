@@ -1,5 +1,10 @@
 # SPWorldsWrapper
-![](https://img.shields.io/badge/dotnet-.NET_8-green)
+![](https://img.shields.io/badge/dotnet-.NET_8-green) 
+
+Actions pass:
+
+![](https://github.com/yawaflua/SPWorldsWrapper/actions/workflows/nuget.yml/badge.svg) 
+![](https://github.com/yawaflua/SPWorldsWrapper/actions/workflows/dotnet.yml/badge.svg)
 
 Это довольно простой wrapper для работы с сайтом, а не с апи. Он позволяет:
 - Находить более расширные данные о пользователь от сайта, нежели стандартные апи.
