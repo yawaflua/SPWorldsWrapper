@@ -13,17 +13,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.x.x'
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
     - name: Set output
       id: vars
       run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
     - name: Publish to NuGet
       uses: brandedoutcast/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: ${{ github.workspace }}SPWorldsWrapper/SPWorldsWrapper.csproj
-        VERSION_REGEX: ${{ steps.vars.outputs.tags }}
+        PROJECT_FILE_PATH: SPWorldsWrapper/SPWorldsWrapper.csproj
         TAG_FORMAT: '*'
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
