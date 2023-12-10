@@ -28,3 +28,5 @@ SPWorlds sp = new SPworlds("[ваш айди]","[ваш токен]");
 SPUser user = await wrapper.getUserData("yawaflua");
 sp.CreateTransaction(user.CardsOwned.First().number, 1, "Привет от yawaflua")
 ```
+# FAQ
+- Где получить токен для использования? - [тут](https://github.com/yawaflua/SPWorldsWrapper/blob/master/GETTOKEN.md)
