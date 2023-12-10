@@ -13,7 +13,7 @@ Actions pass:
 
 # Установка
 ```cli 
-dotnet add package SPWorldsWrapper --version 1.0.0
+dotnet add package SPWorldsWrapper
 ```
 
 # Добавление функций
