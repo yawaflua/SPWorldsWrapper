@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Version>1.0.1</Version>
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,3 +10,4 @@
   </ItemGroup>
 
 </Project>
+<Version>1.0.1</Version>
