@@ -21,6 +21,7 @@ using SPWorlds;
 // Токен надо получать на сайте, либо через cookies, либо через проверку request
 SPWrapper wrapper = new SPWrapper ("AaBbCcDd:123123123");
 // использование сторонней библиотеки от Mih4n
+//! ТОКЕНЫ ДЛЯ SPWorlds и SPWrapper РАЗНЫЕ !
 SPWorlds sp = new SPworlds("[ваш айди]","[ваш токен]");
 
 // Пример, перевод на карту игрока по никнейму: 
