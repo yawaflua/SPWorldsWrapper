@@ -23,7 +23,7 @@ jobs:
     - name: Publish to NuGet
       uses: brandedoutcast/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: SPWorldsWrapper/SPWorldsWrapper/SPWorldsWrapper.csproj
+        PROJECT_FILE_PATH: ${{ github.workspace }}SPWorldsWrapper/SPWorldsWrapper.csproj
         VERSION_REGEX: ${{ steps.vars.outputs.tags }}
         TAG_FORMAT: '*'
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
