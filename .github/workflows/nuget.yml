@@ -2,7 +2,7 @@ name: NetLicensing C# Client - Release
 
 on:
  release:
-  types: [release]
+    types: [published]
 
 jobs:
   publish-nuget:
