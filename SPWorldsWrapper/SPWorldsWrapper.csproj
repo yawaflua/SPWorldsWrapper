@@ -11,7 +11,7 @@
     <Authors>yawaflua</Authors>
     <Company>yawaflua</Company>
     <RepositoryUrl>https://github.com/yawaflua/SPWorldsWrapper</RepositoryUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    
   </PropertyGroup>
   
   <ItemGroup>
