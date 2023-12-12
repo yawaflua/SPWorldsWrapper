@@ -3,7 +3,7 @@
 
 Actions pass:
 
-![](https://github.com/yawaflua/SPWorldsWrapper/actions/workflows/nuget.yml/badge.svg) 
+
 ![](https://github.com/yawaflua/SPWorldsWrapper/actions/workflows/dotnet.yml/badge.svg)
 
 Это довольно простой wrapper для работы с сайтом, а не с апи. Он позволяет:
