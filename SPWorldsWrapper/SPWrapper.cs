@@ -30,11 +30,11 @@ namespace SPWorldsWrapper
         /// Если иное - токен слетел!
         /// </summary>
         /// <returns>Ничего</returns>
-        public async Task spwLogin()
+        public void spwLogin()
         {
             var content = new StringContent(@"{}");
-            var responseMessage = await client.PostAsync("auth/refresh_token", content);
-            await Console.Out.WriteLineAsync(await responseMessage.Content.ReadAsStringAsync());
+            var responseMessage = client.PostAsync("auth/refresh_token", content).Result;
+            Console.WriteLine(responseMessage.Content.ReadAsStringAsync().Result);
         }
         /// <summary>
         /// Получение данных пользователя по юзернейму.
@@ -54,12 +54,11 @@ namespace SPWorldsWrapper
         /// </summary>
         /// <param name="userName">Никнейм пользователя(из майнкрафта)</param>
         /// <example> var a = "a";</example>
-        /// <returns><see cref="SPUser" /> пользователь от сайта, или ошибку.</returns>
-        public async Task<SPUser> getUserData(string userName)
+        /// <returns><see cref="SPUser" /> пользователь от сайта, или null.</returns>
+        public async Task<SPUser?> getUserData(string userName)
         {
             var request = await client.GetAsync($"pl/accounts/{userName}");
-            await Console.Out.WriteLineAsync(request.Content.ReadAsStringAsync().Result);
-            SPUser response = JsonConvert.DeserializeObject<SPUser>(request.Content.ReadAsStringAsync().Result.ToString());
+            SPUser? response = JsonConvert.DeserializeObject<SPUser>(request.Content.ReadAsStringAsync().Result.ToString());
             return response;
         }
         /// <summary>
