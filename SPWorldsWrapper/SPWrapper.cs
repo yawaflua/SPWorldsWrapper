@@ -2,13 +2,22 @@
 using SPWorldsWrapper.Types;
 using System.Net;
 using System.Net.Http.Json;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
 
 namespace SPWorldsWrapper
 {
+    public class AuthentificationError : Exception
+    {
+        public AuthentificationError(string? message, Exception? innerException) : base(message, innerException) { }
+        public AuthentificationError() : base() { }
+        public AuthentificationError(string? message) : base(message) { }
+    }
     public class SPWrapper
     {
         public readonly HttpClient client;
+        
+        
 
         /// <summary>
         /// Асинхронный wrapper для работы напрямую с сайтом, а не с API SPWorlds.ru
@@ -21,7 +30,11 @@ namespace SPWorldsWrapper
             client = new(handler);
             client.BaseAddress = new Uri("https://spworlds.ru/api/");
             cookieContainer.Add(client.BaseAddress, new Cookie("jeff", token));
-            spwLogin();
+            var spwLoginMethod = spwLogin();
+            if (!spwLoginMethod.Result)
+            {
+                throw new AuthentificationError("Ошибка парсинга данных от сайта. Проверьте токен, IP сервера и статус сайта SPWORLDS.RU");
+            }
             
         }
         /// <summary>
@@ -30,11 +43,24 @@ namespace SPWorldsWrapper
         /// Если иное - токен слетел!
         /// </summary>
         /// <returns>Ничего</returns>
-        public void spwLogin()
+        public async Task<bool> spwLogin()
         {
             var content = new StringContent(@"{}");
-            var responseMessage = client.PostAsync("auth/refresh_token", content).Result;
-            Console.WriteLine(responseMessage.Content.ReadAsStringAsync().Result);
+            var responseMessage = await client.PostAsync("auth/refresh_token", content);
+            var bodyFromSPW = await responseMessage.Content.ReadAsStringAsync();
+            var serializedBody = JsonNode.Parse(bodyFromSPW);
+            if (serializedBody == null)
+            {
+                Console.Error.WriteLine("error: Some error returned from site.");
+                Console.WriteLine("debug: please, check your authorization token");
+            }
+            else
+            {
+                Console.WriteLine(await responseMessage.Content.ReadAsStringAsync());
+            }
+           
+            
+            return serializedBody != null;
         }
         /// <summary>
         /// Получение данных пользователя по юзернейму.
