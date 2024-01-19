@@ -22,7 +22,7 @@ jobs:
         PROJECT_FILE_PATH: SPWorldsWrapper/SPWorldsWrapper.csproj
         VERSION_STATIC: ${{ steps.vars.outputs.tags }}
         TAG_COMMIT: true
-        TAG_FORMAT: ${{ steps.meta.outputs.tags }}
+        TAG_FORMAT: "*"
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
         NUGET_SOURCE: https://api.nuget.org
         INCLUDE_SYMBOLS: false
