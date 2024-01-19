@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SPWorldsWrapper.Types;
+using SPWorldsWrapper.Types.Enums;
 using System.Net;
 using System.Net.Http.Json;
 using System.Reflection.Metadata.Ecma335;
@@ -13,17 +14,23 @@ namespace SPWorldsWrapper
         public AuthentificationError() : base() { }
         public AuthentificationError(string? message) : base(message) { }
     }
+    public class ServerError : Exception
+    {
+        public ServerError(string? message, Exception? innerException) : base(message, innerException) { }
+        public ServerError() : base() { }
+        public ServerError(string? message) : base(message) { }
+    }
     public class SPWrapper
     {
         public readonly HttpClient client;
-        
+        private readonly Servers server;
         
 
         /// <summary>
         /// Асинхронный wrapper для работы напрямую с сайтом, а не с API SPWorlds.ru
         /// </summary>
         /// <param name="token">Токен от сайта(смотреть README.md)</param>
-        public SPWrapper(string token) 
+        public SPWrapper(string token, Servers server) 
         {
             var cookieContainer = new CookieContainer();
             var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
@@ -32,9 +39,10 @@ namespace SPWorldsWrapper
             cookieContainer.Add(client.BaseAddress, new Cookie("jeff", token));
             var spwLoginMethod = spwLogin();
             if (!spwLoginMethod.Result)
-            {
                 throw new AuthentificationError("Ошибка парсинга данных от сайта. Проверьте токен, IP сервера и статус сайта SPWORLDS.RU");
-            }
+            if (server == Servers.pl)
+                throw new ServerError("Ошибка! PL закрыт, из-за этого wrapper работать не будет");
+            this.server = server;
             
         }
         /// <summary>
@@ -83,7 +91,7 @@ namespace SPWorldsWrapper
         /// <returns><see cref="SPUser" /> пользователь от сайта, или null.</returns>
         public async Task<SPUser?> getUserData(string userName)
         {
-            var request = await client.GetAsync($"pl/accounts/{userName}");
+            var request = await client.GetAsync($"{server}/accounts/{userName}");
             SPUser? response = JsonConvert.DeserializeObject<SPUser>(request.Content.ReadAsStringAsync().Result.ToString());
             return response;
         }
@@ -94,7 +102,7 @@ namespace SPWorldsWrapper
         public async Task<IEnumerable<SPCity>> getAllSities()
         {
             var citiesArray = new List<SPCity>();
-            var request = await client.GetAsync("https://spworlds.ru/api/pl/cities");
+            var request = await client.GetAsync($"{server}/cities");
             JsonNode jsonBody = await request.Content.ReadFromJsonAsync<JsonNode>();
             foreach (JsonNode node in jsonBody.AsArray())
             {
@@ -112,7 +120,7 @@ namespace SPWorldsWrapper
         {
             try
             {
-                var request = await client.PostAsync("https://spworlds.ru/api/pl/cities", JsonContent.Create(city));
+                var request = await client.PostAsync($"{server}/cities", JsonContent.Create(city));
                 if (request.StatusCode.HasFlag(HttpStatusCode.OK))
                 {
                     return city;
@@ -136,7 +144,7 @@ namespace SPWorldsWrapper
         /// <returns><see cref="SPCity"/>: удаленный город или <see cref="null"/> если нет роли игрок</returns>
         public async Task<SPCity?> deleteSityFromMap(SPCity city)
         {
-            var request = await client.DeleteAsync($"https://spworlds.ru/api/pl/cities/{city.id}");
+            var request = await client.DeleteAsync($"{server}/cities/{city.id}");
             if (request.StatusCode.Equals(200))
             {
                 return city;
