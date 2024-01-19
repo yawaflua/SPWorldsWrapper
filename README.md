@@ -1,5 +1,5 @@
 # SPWorldsWrapper
-![](https://img.shields.io/badge/dotnet-.NET_8-green) 
+![](https://img.shields.io/badge/dotnet-.NET_7-green) 
 
 Actions pass:
 
